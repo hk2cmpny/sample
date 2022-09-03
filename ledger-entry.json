@@ -1,0 +1,42 @@
+{
+  "data": [{
+    "Key": "12;FQAAAACH8BY=8;400095820;",
+    "Entry_No": "5872",
+    "Customer_No": "CL15517",
+    "Posting_Date": "2021-01-06",
+    "Document_Type": "Invoice",
+    "Document_No": "FAI202100001",
+    "Description": "Encomenda EV2100002",
+    "Document_Date": "2021-01-06",
+    "Amount": "571.16",
+    "Remaining_Amount": "0",
+    "Open": false,
+    "Due_Date": "2021-01-06"
+  }, {
+    "Key": "13;FQAAAACH8BY=8;400095820;",
+    "Entry_No": "5873",
+    "Customer_No": "CL15518",
+    "Posting_Date": "2021-01-06",
+    "Document_Type": "Invoice",
+    "Document_No": "FAI202100002",
+    "Description": "Encomenda EV2100003",
+    "Document_Date": "2021-01-06",
+    "Amount": "541.16",
+    "Remaining_Amount": "40",
+    "Open": true,
+    "Due_Date": "2021-01-06"
+  }, {
+    "Key": "13;FQAAAACH8BY=8;400095820;",
+    "Entry_No": "5874",
+    "Customer_No": "CL15519",
+    "Posting_Date": "2021-01-06",
+    "Document_Type": "Invoice",
+    "Document_No": "FAI202100003",
+    "Description": "Encomenda EV2100004",
+    "Document_Date": "2021-01-06",
+    "Amount": "51.00",
+    "Remaining_Amount": "0",
+    "Open": false,
+    "Due_Date": "2021-01-06"
+  }]
+}
