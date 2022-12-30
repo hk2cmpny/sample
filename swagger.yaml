@@ -1,0 +1,391 @@
+openapi: 3.0.3
+info:
+  title: UVavino - OpenAPI 3.0
+  description: |-
+    This is basic api documentation for the decided api to buy and sale vine and have an auction.
+  version: 0.0.1
+servers:
+  - url: http://localhost:8000/api
+tags:
+  - name: Auth
+    description: Authentication flow
+  - name: Static Page
+    description: To get static content
+  - name: Cellar
+    description: All API for cellar
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login User
+      operationId: login
+      requestBody:
+        description: User will login
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginSuccess'          
+        '404':
+          description: User not found
+        '405':
+          description: Invalid input
+  /auth/logout:
+    get:
+      tags:
+        - Auth
+      summary: Logs out current logged in user session
+      description: ''
+      operationId: logoutUser
+      parameters: []
+      responses:
+        default:
+          description: successful operation
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Register new User
+      operationId: register
+      requestBody:
+        description: User will be created and logged in
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginSuccess'          
+        '404':
+          description: User not found
+        '405':
+          description: Invalid input
+  /auth/forgot-password:
+    post:
+      tags:
+        - Auth
+      summary: Forgot password
+      operationId: forgot
+      requestBody:
+        description: Send email to reset new password
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotUser'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'          
+        '404':
+          description: User not found
+        '405':
+          description: Invalid input
+  /auth/reset-password:
+    post:
+      tags:
+        - Auth
+      summary: Reset password
+      operationId: resetpassword
+      parameters:
+        - name: reset_token
+          in: query
+          description: This token will be generated from forgot password and mailed to the user
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Allow user to reset password
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPassword'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'          
+        '404':
+          description: Token not found or invalid
+        '405':
+          description: Invalid input
+  /page/{slug}:
+    get:
+      tags:
+        - Static Page
+      summary: Find pet by ID
+      description: Returns a single pet
+      operationId: getStaticPage
+      parameters:
+        - name: slug
+          in: path
+          description: Page slug
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StaticPage'          
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+      security:
+        - api_key: []
+        - petstore_auth:
+            - write:pets
+            - read:pets
+  /cellar:
+    post:
+      tags:
+        - Cellar
+      operationId: create_cellar
+      summary: Creating a new cellar/product of wine
+      requestBody:
+        description: Cellar Object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cellar'
+        required: true
+        
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+  /cellar/{cellar_id}:
+    get:
+      tags:
+        - Cellar
+      operationId: get_cellar
+      summary: Creating a new cellar/product of wine
+      parameters:
+        - name: cellar_id
+          in: path
+          description: ID of the cellar
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cellar'
+  /cellars:
+    get:
+      tags:
+        - Cellar
+      operationId: get_cellars
+      summary: Creating a new cellar/product of wine
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cellar'
+components:
+  schemas:
+    Success:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Operation completed successfully."
+    Login:
+      type: object
+      properties:
+        username:
+          type: string
+          example: harikrushna@enstead.com
+        password:
+          type: string
+          example: secret
+    ForgotUser:
+      type: object
+      properties:
+        email:
+          type: string
+          example: harikrushna@enstead.com
+    ResetPassword:
+      type: object
+      properties:
+        password:
+          type: string
+          example: secret
+    LoginSuccess:
+      type: object
+      properties:
+        token:
+          type: string
+          example: secrettoken
+    StaticPage:
+      type: object
+      properties:
+        slug:
+          type: string
+          example: 'demo-title'
+        title:
+          type: string
+          example: 'Title'
+        content:
+          type: string
+          example: 'Lorem ipsum'
+    Cellar:
+      type: object
+      properties:
+        title:
+          type: string
+          example: 'Title'
+        description:
+          type: string
+          example: 'Lorem ipsum'
+        drink_type:
+          type: string
+          example: 'Title'
+        wine_name:
+          type: string
+          example: 'Title'
+        bottle_size:
+          type: string
+          example: 'Title'
+        country:
+          type: string
+          example: 'Title'
+        region:
+          type: string
+          example: 'Title'
+        producer:
+          type: string
+          example: 'Title'
+        winemaker:
+          type: string
+          example: 'Title'
+        type_of_wine:
+          type: string
+          example: 'Title'
+        year:
+          type: string
+          example: 'Title'
+        grap_varieties:
+          type: string
+          example: 'Title'
+        wine_tags:
+          type: string
+          example: 'Title'
+        storage_conditions:
+          type: string
+          example: 'Title'
+        review_and_awards:
+          type: string
+          example: 'Title'
+        medal:
+          type: string
+          example: 'Title'
+        award_name:
+          type: string
+          example: 'Title'
+        score:
+          type: string
+          example: 'Title'
+        review_name:
+          type: string
+          example: 'Title'
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+          example: theUser
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        password:
+          type: string
+          example: '12345'
+    DBUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        username:
+          type: string
+          example: theUser
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        password:
+          type: string
+          example: '12345'
+      xml:
+        name: user
+  requestBodies:
+    UserArray:
+      description: List of user object
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+          scopes:
+            write:pets: modify pets in your account
+            read:pets: read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
